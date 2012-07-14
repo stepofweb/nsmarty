@@ -2,7 +2,7 @@
 , "description": "Smarty template engine for Node.js"
 , "keywords": ["template", "nsmarty"]
 , "version" : "0.0.1"
-, "homepage": "http://nsmarty.stepofweb.com"
+, "homepage": "https://github.com/stepofweb/nsmarty"
 , "author" : "Dorin Grigoras"
 , "main" : "lib/nsmarty"
 }
