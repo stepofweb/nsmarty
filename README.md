@@ -13,7 +13,7 @@
 
 
 
-## JAVASCRIPT USAGE
+## Node.js APP USAGE
 
     var  util    = require('util'),
          http    = require('http'),
