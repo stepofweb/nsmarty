@@ -1,11 +1,11 @@
-# NSmarty - Node.js Template Engine
+# NSmarty - Template Engine
 ### Prety much the same like PHP Smarty
 
 ## Install
 
     npm install nsmarty
 
-## TEST
+## Direct Test (ready to use)
 
 	1. Unpack demo.zip 
 	2. Run the application: node app.js
@@ -13,7 +13,7 @@
 
 
 
-## Node.js APP USAGE
+## APP USAGE
 
     var  util    = require('util'),
          http    = require('http'),
@@ -78,6 +78,8 @@
 ## Documentation
 
 	See doc/ folder
+	OR
+	http://nsmarty.stepofweb.com/
 
 ## General
 
