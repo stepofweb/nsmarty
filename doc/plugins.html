@@ -28,7 +28,7 @@ Using client side templates lets you avoid hassle of tedious and error-prone man
 
 Although there are a lot of browser-side Javascript template engines available, NSmarty has some unique features that sets this project apart from the rest.
 
-jSmart implements rich and well established syntax of the popular PHP template engine Smarty familiar to many developers around the world. Together with limitied build-in support for PHP language constructs and libraries like php.js it creates possibility to use the same set of templates both on the server and the client side.
+NSmarty implements rich and well established syntax of the popular PHP template engine Smarty familiar to many developers around the world. Together with limitied build-in support for PHP language constructs and libraries like php.js it creates possibility to use the same set of templates both on the server and the client side.
 
 NSmarty documentation is still incomplete, but you can use Smarty documentation on www.smarty.net/docs/en/. Almost all of Smarty 3 (and Smarty 2) syntax is supported.
 
@@ -106,7 +106,7 @@ Hello Everybody
 	<br /><br />
 	Only the opening tag of the block function may have attributes. All attributes passed to template functions from the template are contained in the params object. The opening tag attributes are also accessible to your function when processing the closing tag.
 	<br /><br />
-	The value of the content variable depends on whether your function is called for the opening or closing tag. In case of the opening tag, it will be NULL, and in case of the closing tag it will be the contents of the template block. Note that the template block will have already been processed by jSmart, so all you will receive is the template output, not the template source.
+	The value of the content variable depends on whether your function is called for the opening or closing tag. In case of the opening tag, it will be NULL, and in case of the closing tag it will be the contents of the template block. Note that the template block will have already been processed by NSmarty, so all you will receive is the template output, not the template source.
 	data is an object passed to fetch().
 	<br /><br />
 	The parameter repeat is an Object with one property value and provides a possibility for it to control how many times the block is displayed. By default repeat.value is TRUE at the first call of the block-function (the opening tag) and FALSE on all subsequent calls to the block function (the block's closing tag). Each time the function implementation returns with repeat.value being TRUE, the contents between {func}...{/func} are evaluated and the function implementation is called again with the new block contents in the parameter content. 
