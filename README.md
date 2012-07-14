@@ -1,5 +1,5 @@
-# nSmarty - Node.js Smarty [Template Engine]
-# Prety much the same like PHP Smarty
+# NSmarty - Node.js Template Engine
+### Prety much the same like PHP Smarty
 
 ## Install
 
