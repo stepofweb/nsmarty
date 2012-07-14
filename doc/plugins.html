@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta http-equiv="content-type" value="text/html;utf-8">
+	<title>Index</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<link rel="stylesheet" type="text/css" href="css/engine.css">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+
+<body>
+
+	<a href="https://github.com/stepofweb/nsmarty" class="fork"></a>
+
+	<div id="header">
+		<div class="wrap">
+			<div id="intro" class="fl">
+				<a href="#" class="logo"></a>
+				<h2><span>N</span>ode.js <span>Smarty</span> - Template engine.</h2>
+				<p>NSmarty is a ported PHP Smarty template engine. NSmarty suport all well known: variable output, variable modifiers, block, assign, include, loop through arrays and more.</p>
+				<p>Also, NSmarty have a strong caching feature which make your application very faster.</p>
+			</div>
+
+			<div class="fr">
+<h2> Why NSmarty?</h2>
+<pre><code>
+Using client side templates lets you avoid hassle of tedious and error-prone manual manipulations with strings and DHTML objects, and helps you create Model-View-Controller JavaScript application where the presentation and the logic are clearly separated.
+
+Although there are a lot of browser-side Javascript template engines available, NSmarty has some unique features that sets this project apart from the rest.
+
+jSmart implements rich and well established syntax of the popular PHP template engine Smarty familiar to many developers around the world. Together with limitied build-in support for PHP language constructs and libraries like php.js it creates possibility to use the same set of templates both on the server and the client side.
+
+NSmarty documentation is still incomplete, but you can use Smarty documentation on www.smarty.net/docs/en/. Almost all of Smarty 3 (and Smarty 2) syntax is supported.
+
+// Authors: Dorin Grigoras , Max Miroshnikov.
+// http://www.gnu.org/licenses/lgpl.html
+</code></pre>
+
+				</div>
+
+			</div>
+
+
+			<div class="clr"></div>
+			<div id="menu">
+				<div class="wrap">
+
+				<ul>
+					<li><a href="index.html">Syntax</a></li>
+					<li><a href="variable_modifiers.html">Variable Modifiers</a></li>
+					<li><a href="statements_functions.html">Statements &amp; Functions</a></li>
+					<li><a href="plugins.html">Plugins</a></li>
+					<li><a href="about.html">About</a></ul>
+				</ul>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="content cbg-normal">
+			<div class="wrap">
+
+<h2>Extending nSmarty With Plugins</h2>
+<p>
+	It is possible to register your own custom plugins. See registerPlugin() API method.<br />
+	<br />
+	There are several types of plugins: 
+</p>
+
+
+
+<h2>Function plugin</h2>
+<p>
+	All attributes passed to template functions from the template are contained in the params object.
+	<br /><br />
+	data is an object passed to fetch().
+</p>
+<pre><code>
+// Register plugin 
+nSmarty.prototype.registerPlugin('function', 'sayHello', function(params, data) {
+
+	var s = 'Hello ';
+	if ('to' in params) {
+		s += params['to'];
+	}
+
+	return s;
+});
+</code></pre>
+
+<pre><code>
+// In the template
+   {sayHello to='Everybody'}
+
+// Output:
+Hello Everybody
+</code></pre>
+
+
+<h2>Block plugin</h2>
+<p>
+	Block functions are functions of the form: {func} .. {/func}. In other words, they enclose a template block and operate on the contents of this block. Block functions take precedence over custom functions of the same name, that is, you cannot have both custom function {func} and block function {func}..{/func}.
+	<br /><br />
+	By default your function implementation is called twice by nSmarty: once for the opening tag, and once for the closing tag. (See repeat below on how to change this.)
+	<br /><br />
+	Only the opening tag of the block function may have attributes. All attributes passed to template functions from the template are contained in the params object. The opening tag attributes are also accessible to your function when processing the closing tag.
+	<br /><br />
+	The value of the content variable depends on whether your function is called for the opening or closing tag. In case of the opening tag, it will be NULL, and in case of the closing tag it will be the contents of the template block. Note that the template block will have already been processed by jSmart, so all you will receive is the template output, not the template source.
+	data is an object passed to fetch().
+	<br /><br />
+	The parameter repeat is an Object with one property value and provides a possibility for it to control how many times the block is displayed. By default repeat.value is TRUE at the first call of the block-function (the opening tag) and FALSE on all subsequent calls to the block function (the block's closing tag). Each time the function implementation returns with repeat.value being TRUE, the contents between {func}...{/func} are evaluated and the function implementation is called again with the new block contents in the parameter content. 
+</p>
+<pre><code>
+// Register plugin 
+nSmarty.prototype.registerPlugin('block', 'replaceStr', function(params, content, data, repeat) {
+
+	return content.replace(
+		new RegExp(params['from'],'g'), params['to']
+	);
+});
+</code></pre>
+
+<pre><code>
+// In the template
+{replaceStr from=' ' to='_'}all whitespaces will be relaced{/replaceStr}
+
+// Output:
+all_whitespaces_will_be_relaced
+</code></pre>
+
+
+<h2>Variable Modifier plugin</h2>
+<p>
+	Modifiers are little functions that are applied to a variable in the template before it is displayed or used in some other context. Modifiers can be chained together.
+	<br /><br />
+	The first parameter to the modifier plugin is the value on which the modifier is to operate. The rest of the parameters are optional, depending on what kind of operation is to be performed.
+	<br /><br />
+	The modifier has to return the result of its processing. 
+</p>
+<pre><code>
+// Register plugin
+nSmarty.prototype.registerPlugin('modifier', 'upper', function(s) {
+
+	return s.toUpperCase();
+});
+</code></pre>
+
+<pre><code>
+// In the template
+{$foo = 'bar'}
+{$foo} {$foo|upper}
+
+
+// Output:
+bar BAR
+</code></pre>
+
+
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+	<script type="text/javascript" src="js/custom.js"></script>
+	<script type="text/javascript" src="js/hiless.js"></script>
+</body></html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta http-equiv="content-type" value="text/html;utf-8">
+	<title>Index</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<link rel="stylesheet" type="text/css" href="css/engine.css">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+
+<body>
+
+	<a href="https://github.com/stepofweb/nsmarty" class="fork"></a>
+
+	<div id="header">
+		<div class="wrap">
+			<div id="intro" class="fl">
+				<a href="#" class="logo"></a>
+				<h2><span>N</span>ode.js <span>Smarty</span> - Template engine.</h2>
+				<p>NSmarty is a ported PHP Smarty template engine. NSmarty suport all well known: variable output, variable modifiers, block, assign, include, loop through arrays and more.</p>
+				<p>Also, NSmarty have a strong caching feature which make your application very faster.</p>
+			</div>
+
+			<div class="fr">
+<h2> Why NSmarty?</h2>
+<pre><code>
+Using client side templates lets you avoid hassle of tedious and error-prone manual manipulations with strings and DHTML objects, and helps you create Model-View-Controller JavaScript application where the presentation and the logic are clearly separated.
+
+Although there are a lot of browser-side Javascript template engines available, NSmarty has some unique features that sets this project apart from the rest.
+
+jSmart implements rich and well established syntax of the popular PHP template engine Smarty familiar to many developers around the world. Together with limitied build-in support for PHP language constructs and libraries like php.js it creates possibility to use the same set of templates both on the server and the client side.
+
+NSmarty documentation is still incomplete, but you can use Smarty documentation on www.smarty.net/docs/en/. Almost all of Smarty 3 (and Smarty 2) syntax is supported.
+
+// Authors: Dorin Grigoras , Max Miroshnikov.
+// http://www.gnu.org/licenses/lgpl.html
+</code></pre>
+
+				</div>
+
+			</div>
+
+
+			<div class="clr"></div>
+			<div id="menu">
+				<div class="wrap">
+
+				<ul>
+					<li><a href="index.html">Syntax</a></li>
+					<li><a href="variable_modifiers.html">Variable Modifiers</a></li>
+					<li><a href="statements_functions.html">Statements &amp; Functions</a></li>
+					<li><a href="plugins.html">Plugins</a></li>
+					<li><a href="about.html">About</a></ul>
+				</ul>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="content cbg-normal">
+			<div class="wrap">
+
+<h2>Node.js basic usage</h2>
+<pre><code>
+// ======================== app.js ========================
+
+    var  util    = require('util'),
+         http    = require('http'),
+         nsmarty = require('nsmarty');
+
+	// IMPORTANT! Templates path	
+    nsmarty.tpl_path = __dirname + '';
+	
+	var $arr = {
+		// simple {$title}
+		title: 'Hi, I am nsmarty template engine!',
+
+		// loop {foreach} ... {/foreach}
+		books: [
+			{
+				title  : 'JavaScript: The Definitive Guide',          
+				author : 'David Flanagan',                            
+				price  : '31.18'
+			},
+			{
+				title  : 'Murach JavaScript and DOM Scripting',
+				author : 'Ray Harris'
+			},
+			{
+				title  : 'Head First JavaScript',
+				author : 'Michael Morrison',
+				price  : '29.54'
+			}
+		]
+	}
+
+	http.createServer(function (req, res) {
+
+	// assign - parse the template.
+	var	stream = nsmarty.assign('test.tpl', $arr);
+		util.pump(stream, res); // instead of _display() from PHP Smarty.
+
+	}).listen(8000);
+	console.log("Server started: http://127.0.0.1:8000/");
+
+
+
+// ======================== test.tpl ========================
+// create a file called "test.tpl"
+
+	{* NSMARTY TEMPLATE TEST *}
+
+	&lt;h1>{$title}&lt;/h1>
+
+	{foreach $books as $i => $book}
+		&lt;div style="background-color: {cycle values='cyan,yellow'};">
+			[{$i+1}] {$book.title|upper} by {$book.author}
+
+			{if $book.price}                                
+				Price: &lt;span style="color:red">&euro;{$book.price}&lt;/span>
+			{/if}
+		&lt;/div>
+	{else}
+		No books
+	{/foreach}
+	
+	{include file="include.tpl"}
+
+
+
+// ======================== footer.tpl ========================
+// create a file called "footer.tpl"
+	I am footer.tpl , the file included from test.tpl
+
+
+
+// ======================== Node.js TESTING  ========================
+// type in your console
+node app.js
+</code></pre>
+
+
+
+<h2>Comments</h2>
+<pre><code>
+{* this is a comment *}
+</code></pre>
+
+<h2>Variables</h2>
+<pre><code>
+{$foo = 'bar'}                   {* create/assign variable *}
+{$foo}
+{$foo|upper|replace:'B':'G'}     {* variable with modifiers *}
+
+bar
+GAR
+</code></pre><br />
+See also <a href="#">modifiers</a>
+
+
+<h2>Object and Arrays</h2>
+<pre><code>
+{$person = [name=>[first=>'John'],age=>36]}  {* create object *}
+{$person.name.last = 'Doe'}                  {* add/set object property *}
+{$person['favorite gadget'] = 'iPad'}        {* object property name can have spaces *}
+
+I am {$person.name.first} {$person.name.last} and I like my {$person['favorite gadget']}
+
+
+{$days = ['Sun','Mon','Tue']}               {* create array *}
+{$days[] = 'Wed'}                           {* add to array *}
+
+Today is {$days[3]}
+
+I am John Doe and I like my iPad
+                
+Today is Wed
+</code></pre>
+
+
+<h2>Double-quoted strings</h2>
+<pre><code>
+//Variable names will be expanded in double-quoted strings.
+{$bar = "value of foo is '$foo'"}
+{$bar}
+
+// If a variable contain any other character than [0-9a-zA-Z_], it must be surrounded by `backticks`. 
+{$foo = "`$person.name.first` has `$person['favorite gadget']`"} 
+{$foo}
+
+// Any Smarty tag will also be expanded in double quotes. 
+{$dayNames = "{foreach $days as $dayName} {$dayName@index+1}:'{$dayName|upper}'{if !$dayName@last},{/if} {/foreach}"} 
+Days of the week are: {$dayNames}
+</code></pre>
+
+
+<h2>Operators</h2>
+<pre><code>
+Operator 		Alternates
+++ --
+!			not
+* /	
+%			mod
++ -
+>			gt
+<			lt
+>=			gte, ge
+<=			lte, le
+==			eq	
+!=			ne, neq
+=== !==	
+is not div by
+is not even
+is not even by
+is not odd
+is not odd by
+&&			and
+||			or
+xor
+</code></pre>
+
+
+<h2>Condition</h2>
+<pre><code>
+{if $foo == 'bar'}
+   bar
+{elseif $foo eq 'buh'}
+   buh
+{else}
+   smth else
+{/if}
+</code></pre><br />
+See also <a href="#">if</a>
+
+
+
+<h2>Iterate over arrays and objects</h2>
+<pre><code>
+// FOREACH
+{$colors = [red=>'#f00', green=>'#0f0', blue=>'#00f']}
+
+{foreach $colors as $name => $code}
+    &lt;div style='color:{$code}'>{$code@index}: {$name}&lt;/div>
+{else}
+   no colors
+{/foreach}
+
+
+// SECTION
+{$colorNames = [red,green,blue]}
+{$colorCodes = ['#f00','#0f0','#00f']}
+
+{section name='color' loop=$colorNames}
+   &lt;div style='color:{$colorCodes[color]}'>{$smarty.section.color.index}: {$colorNames[color]}&lt;/div>
+{sectionelse}
+   no colors
+{/section}
+
+
+// FOR
+{for $i=0 to $colorNames|count-1}
+   &lt;div style='color:{$colorCodes[$i]}'>{$i}: {$colorNames[$i]}&lt;/div>
+{/for}
+
+
+// WHILE
+{$j = $colorNames|count}
+{while --$j>=0}
+  &lt;div style='color:{$colorCodes[$j]}'>{$j}: {$colorNames[$j]}&lt;/div>
+{/while}
+</code></pre>
+
+
+<h2>Escape HTML</h2>
+<pre><code>
+{$foo = '<b>bar</b>'}
+{setfilter escape}
+{$foo}
+{/setfilter}
+</code></pre>
+
+
+
+
+
+<h2>Filters</h2>
+<pre><code>
+{$foo = 'b a r'}
+1: {$foo}
+
+{setfilter replace:' ':'_'|upper}    {* any modifier(s) or/and function(s) *}
+  2: {$foo}
+  3: {$foo nofilter}
+{/setfilter}
+
+// OUTPUT
+1: b a r
+2: B_A_R
+3: b a r
+</code></pre>
+
+
+
+<h2>Template inclusion</h2>
+<pre><code>
+{include file="your_file.tpl"}
+</code></pre>
+
+
+
+
+
+
+
+
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+	<script type="text/javascript" src="js/custom.js"></script>
+	<script type="text/javascript" src="js/hiless.js"></script>
+</body></html>

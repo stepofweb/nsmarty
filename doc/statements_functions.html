@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta http-equiv="content-type" value="text/html;utf-8">
+	<title>Index</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<link rel="stylesheet" type="text/css" href="css/engine.css">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+
+<body>
+
+	<a href="https://github.com/stepofweb/nsmarty" class="fork"></a>
+
+	<div id="header">
+		<div class="wrap">
+			<div id="intro" class="fl">
+				<a href="#" class="logo"></a>
+				<h2><span>N</span>ode.js <span>Smarty</span> - Template engine.</h2>
+				<p>NSmarty is a ported PHP Smarty template engine. NSmarty suport all well known: variable output, variable modifiers, block, assign, include, loop through arrays and more.</p>
+				<p>Also, NSmarty have a strong caching feature which make your application very faster.</p>
+			</div>
+
+			<div class="fr">
+<h2> Why NSmarty?</h2>
+<pre><code>
+Using client side templates lets you avoid hassle of tedious and error-prone manual manipulations with strings and DHTML objects, and helps you create Model-View-Controller JavaScript application where the presentation and the logic are clearly separated.
+
+Although there are a lot of browser-side Javascript template engines available, NSmarty has some unique features that sets this project apart from the rest.
+
+jSmart implements rich and well established syntax of the popular PHP template engine Smarty familiar to many developers around the world. Together with limitied build-in support for PHP language constructs and libraries like php.js it creates possibility to use the same set of templates both on the server and the client side.
+
+NSmarty documentation is still incomplete, but you can use Smarty documentation on www.smarty.net/docs/en/. Almost all of Smarty 3 (and Smarty 2) syntax is supported.
+
+// Authors: Dorin Grigoras , Max Miroshnikov.
+// http://www.gnu.org/licenses/lgpl.html
+</code></pre>
+
+				</div>
+
+			</div>
+
+
+			<div class="clr"></div>
+			<div id="menu">
+				<div class="wrap">
+
+				<ul>
+					<li><a href="index.html">Syntax</a></li>
+					<li><a href="variable_modifiers.html">Variable Modifiers</a></li>
+					<li><a href="statements_functions.html">Statements &amp; Functions</a></li>
+					<li><a href="plugins.html">Plugins</a></li>
+					<li><a href="about.html">About</a></ul>
+				</ul>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="content cbg-normal">
+			<div class="wrap">
+
+<h2>{append}</h2>
+<pre><code>
+{append var='arr' value='a'}
+{append var='arr' value='b'}
+{append var='arr' value='c'} 
+
+{foreach $arr as $i => $v}
+   [{$i}]:{$v}
+{/foreach} 
+
+
+{append 'name' 'Bob'   index='first'}
+{append 'name' 'Meyer' index='last'}
+
+The first name is {$name.first}.
+The last name is {$name.last}.
+
+// output:
+
+[0]:a 
+[1]:b 
+[2]:c
+
+The first name is Bob. 
+The last name is Meyer.
+</code></pre>
+
+
+<h2>{assign}</h2>
+<pre><code>
+{assign var="name" value="Bob"} {* or *} {assign "name" "Bob"} 
+
+The value of name is {$name}.
+
+{assign "foo" "foo is [{'bar'|upper}]"} 
+{$foo}
+
+//Output:
+
+The value of name is Bob. 
+foo is [BAR]
+</code></pre>
+
+
+<h2>{block}</h2>
+
+<p>
+	The {block} contents of a child template will replace the contents of {block}-s with the same name in the parent template(s).
+	<br />
+	Optionally {block} areas of child and parent templates can be merged into each other. You can append or prepend the parent {block} content by using the append or prepend option flag with the childs {block} definition. With the {$smarty.block.parent} the {block} content of the parent template can be inserted at any location of the child {block} content. {$smarty.block.child} inserts the {block} content of the child template at any location of the parent {block}.
+	<br />
+	{blocks}'s can be nested. 
+</p>
+<pre><code>
+//parent_tpl:
+
+&lt;h1>{block 'title1'}Title - {/block}&lt;/h1>
+&lt;h2>{block 'title2'} - is the title{/block}&lt;/h2>
+&lt;h3>{block 'title3'}Title is "{$smarty.block.child}" {/block}&lt;/h3>
+&lt;h4>{block 'title4'}Title{/block}&lt;/h4>
+{block 'ignore_me' hide}no child block for this{/block}
+
+//child_tpl:
+
+{extends file="parent_tpl"} 
+
+{block 'title1' append}child page{/block}
+{block 'title2' prepend}Child page{/block}
+{block 'title3'}child page{/block}
+{block 'title4'}The "{$smarty.block.parent}" is "child page"{/block}
+
+//output:
+
+&lt;h1>Title - child page&lt;/h1>
+&lt;h2>Child page - is the title&lt;/h2>
+&lt;h3>Title is "child page"&lt;/h3>
+&lt;h4>The "Title" is "child page"&lt;/h4>
+</code></pre>
+
+
+<h2>{break}</h2>
+<p>
+	{break} aborts the iteration. It may be inside {foreach}, {section}, {for} and {while} tags. 
+</p>
+<pre><code>
+{$colors = [black=>'#000', blue=>'#00F', green=>'#0F0', red=>'#F00', white=>'#FFF']}
+
+{foreach $colors as $color_name => $color_code}
+   {if $color_code@index == 3}    {* abort iterating - show only first 3 items *}
+      {break}
+   {/if}
+   &lt;span style="color:{$color_code}">{$color_name}&lt;/span>
+{/foreach}
+</code></pre>
+
+
+<h2>{call}</h2>
+<pre><code>
+{function hello}
+   Hello {$to}!
+{/function}
+
+{$fname = 'hello'}
+{call $fname to='world'}
+
+// output:
+Hello world!
+</code></pre>
+
+
+<h2>{continue}</h2>
+<p>
+	{continue} leaves the current iteration and begins with the next iteration. It may be inside {foreach}, {section}, {for} and {while} tags. 
+</p>
+<pre><code>
+{$colors = [white=>'#FFF', black=>'#000', blue=>'#00F', green=>'#0F0', red=>'#F00']}
+
+{foreach $colors as $color_name => $color_code}
+   {if $color_name == "white"}  {* skip this iteration *}
+      {continue}
+   {/if}
+   &lt;span style="color:{$color_code}">{$color_name}&lt;/span>
+{/foreach}
+</code></pre>
+
+
+<h2>{capture}</h2>
+<p>
+	{capture} is used to collect the output of the template between the tags into a variable instead of displaying it. Any content between {capture name='foo'} and {/capture} is collected into the variable specified in the name attribute.
+	<br />
+	The captured content can be used in the template from the variable $smarty.capture.foo where 'foo' is the value passed in the name attribute. If you do not supply the name attribute, then 'default' will be used as the name ie $smarty.capture.default.
+	<br />
+	{capture}'s can be nested. 
+</p>
+<pre><code>
+{capture name='testCapture1'}
+this will be captured
+{for $i=1 to 10}
+   {$i}
+{/for}
+{/capture}
+
+[{$smarty.capture.testCapture1}]
+
+// OUTPUT
+[this will be captured
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+   8
+   9
+   10
+]
+</code></pre>
+
+
+<h2>{extends}</h2>
+<p>
+{extends} tags are used in child templates in template inheritance for extending parent templates.<br /><br />
+
+    &bull; The {extends} tag must be on the first line of the template.<br />
+    &bull; If a child template extends a parent template with the {extends} tag it may contain only {block} tags. Any other template content is ignored.
+</p>
+<pre><code>
+Attribute Name 	Required 	Default 	Description
+file		Yes		n/a		The name of the template file which is extended
+</code></pre>
+
+
+<h2>{for}</h2>
+<p>
+	The {for} {forelse} tag is used to create simple loops. The following different formarts are supported:<br /><br />
+
+		&bull; {for $var=$start to $end} simple loop with step size of 1.<br />
+		&bull; {for $var=$start to $end step $step} loop with individual step size. <br />
+<br />
+	{forelse} is executed when the loop is not iterated. 
+</p>
+<pre><code>
+Attribute 	Required 	Description
+max 		No 		Limit the number of iterations 
+</code></pre>
+<pre><code>
+{for $i=1 to 5}
+   {if $i == 3}
+      {continue}
+   {/if}
+   {$i}
+{/for}
+
+{for $i=-5 to -1}
+   {$i}
+{/for}
+
+{$num=10}
+{for $i=$num to 1 step -2}
+   {$i}
+{/for}
+
+{$ar = ['a','b','c','d']}
+{for $i=0 to $ar|count-1 max=3}
+   {$ar[$i]}
+{/for}
+
+{$empty = []}
+{for $i=0 to $empty|count-1}
+   {$ar[$i]}
+{forelse}
+   array is empty
+{/for}
+
+// Output:
+1 2 4 5
+-5 -4 -3 -2 -1
+10 8 6 4 2 
+a b c 
+array is empty
+</code></pre>
+
+
+
+<h2>{foreach}</h2>
+<p>
+{foreach} is used for looping over arrays of data. {foreach} has a simpler and cleaner syntax than the {section} loop, and can also loop over associative arrays. 
+</p>
+<pre><code>
+{foreach $arrayvar as $itemvar}
+   ...
+{/foreach}
+
+{foreach $arrayvar as $keyvar=>$itemvar} 
+   ...
+{/foreach}
+</code></pre>
+
+<pre><code>
+// Smarty 2.x obsolete syntax is also supported. 
+{foreach from=$myarray key="mykey" item="myitem"}
+   ...
+{/foreach}
+</code></pre>
+
+<pre><code>
+@key
+Although you can retrieve the array key with the syntax {foreach $myArray as $myKey => $myValue}, the key is always available as $myValue@key within the {foreach} loop. 
+
+@index
+contains the current array index, starting with zero
+
+@iteration
+contains the current loop iteration and always starts at one
+
+@first
+is TRUE if the current {foreach} iteration is the first one
+
+@last
+is TRUE if the current {foreach} iteration is the last one
+
+@show
+This property can be used after the execution of a {foreach} loop to detect if data has been displayed or not.
+
+@total
+contains the number of iterations that this {foreach} will loop. This can be used inside or after the {foreach}. 
+</code></pre>
+
+<pre><code>
+{$colors = [black=>'#000', blue=>'#00F', green=>'#0F0', red=>'#F00', white=>'#FFF']}
+
+{foreach $colors as $name=>$color}
+   {if $color@first}
+      &lt;div id=colors>
+   {/if}
+  &lt;span style="color:{$color}">[{$color@index}] [{$color@iteration}] {$name}&lt;/span>
+   {if $color@last}
+      &lt;/div>
+   {/if}
+{foreachelse}
+   'colors' array is empty
+{/foreach}
+
+{if $color@show}
+   num of colors: {$color@total}
+{/if}
+
+
+
+// OUTPUT
+
+&lt;div id=colors>
+&lt;span style="color:#000">[0][1] black</span>
+&lt;span style="color:#00F">[1][2] blue</span>
+&lt;span style="color:#0F0">[2][3] green</span>
+&lt;span style="color:#F00">[3][4] red</span>
+&lt;span style="color:#FFF">[4][5] white</span>
+&lt;/div>
+num of colors: 5
+</code></pre>
+
+
+<h2>{function}</h2>
+<p>
+{function} is used to create functions within a template and call them just like a plugin function. Instead of writing a plugin that generates presentational content, keeping it in the template is often a more manageable choice. It also simplifies data traversal, such as deeply nested menus.
+<br /><br />
+    - The {function} tag must have the name attribute which contains the the name of the template function. A tag with this name can be used to call the template function.<br />
+    - Default values for variables can be passed to the template function as attributes. The default values can be overwritten when the template function is being called.<br />
+    - You can use all variables from the calling template inside the template function. Changes to variables or new created variables inside the template function have local scope and are not visible inside the calling template after the template function is executed. 
+</p>
+<pre><code>
+Attribute Name 	Required 	Default 	Description
+name		Yes		n/a		The name of the template function
+var ...		No		n/a		default variable value to pass local to the template function
+</code></pre>
+
+<pre><code>
+{function name="testFunc" parStr='test' parNum=777}
+   this is function with params: [{$parStr}] [{$parNum}]
+{/function}
+
+{testFunc parStr='new str'}
+
+Output:
+
+   this is function with params: [new str] [777]
+</code></pre>
+
+<h2>{javascript}</h2>
+<p>
+The {javascript} tags allow JavaScript code to be embedded directly into the template.<br />
+<br />
+All the variables assigned to the template are available within {javascript}. <br />
+To create a new variable, add it to the $this object (e.g. $this.foo = 'bar') 
+</p>
+<pre><code>
+{$foo = 'bar'}
+
+{javascript}
+   if (foo == 'bar')
+   {
+      foo = 'buh';
+      $this.newVar = 'new';
+   }
+{/javascript}
+
+foo: {$foo}
+newVar: {$newVar}
+
+
+// Output:
+foo: buh
+newVar: new
+</code></pre>
+
+
+<h2>{if}</h2>
+<pre><code>
+{if $foo != 'bar'}
+   bar
+{elseif $foo == 'abc'}
+   buh
+{else}
+   smth else
+{/if}
+</code></pre>
+
+
+<h2>{include}</h2>
+<pre><code>
+{include file='path_to/template.tpl'}
+</code></pre>
+
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+	<script type="text/javascript" src="js/custom.js"></script>
+	<script type="text/javascript" src="js/hiless.js"></script>
+</body></html>
