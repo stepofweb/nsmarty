@@ -1,5 +1,5 @@
 # NSmarty - Node Template Engine
-### Prety much the same like PHP Smarty
+### Pretty much the same like PHP Smarty
 
 ## Install
 
